@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Catálogo Telcel VIP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+      margin: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      background: white;
+    }
+    .card img {
+      width: 100%;
+      height: auto;
+      max-height: 250px;
+      object-fit: contain;
+      padding: 8px;
+      transition: opacity 0.5s ease-in-out;
+    }
+    .info {
+      padding: 15px;
+      text-align: center;
+    }
+    .modelo {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .caracteristicas {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 10px;
+    }
+    .precio {
+      background: #e60023;
+      color: white;
+      font-weight: bold;
+      padding: 4px 10px;
+      border-radius: 5px;
+      font-size: 14px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      text-decoration: line-through;
+    }
+    .incluido {
+      font-size: 14px;
+      color: #d40000;
+      font-weight: bold;
+      margin-top: 32px;
+    }
+    .beneficio {
+      width: 100%;
+      padding: 0 15px 15px;
+    }
+    .beneficio img {
+      width: 100%;
+      border-radius: 0 0 10px 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🌟 Catálogo Telcel VIP</h1>
+<div class="grid" id="catalogo"></div>
+
+<script>
+fetch("https://opensheet.elk.sh/1H91IAn1suzgIZaZ7VXzpGpM-CWvPf9dKv_hUNoELjFg/Datos%20Equipos")
+  .then(response => response.json())
+  .then(data => {
+    const container = document.getElementById("catalogo");
+
+    data.forEach((item, index) => {
+      // 🔄 Obtener todas las imágenes como arreglo
+      const archivos = item.archivo.split(',').map(nombre => nombre.trim());
+      if (archivos.length === 0) return;
+
+      const imagenes = archivos.map(nombre =>
+        `https://raw.githubusercontent.com/piztian/TelcelVIP/main/fotos/${nombre}`
+      );
+
+      const idImagen = `imagen-${index}`;
+      const rutaInicial = imagenes[0]; // Primera imagen por default
+
+      const html = `
+        <div class="card">
+          <a href="${rutaInicial}" target="_blank">
+            <img id="${idImagen}" src="${rutaInicial}" alt="${item.TELEFONO}">
+          </a>
+          <div class="precio">$${item.PRECIO}</div>
+          <div class="incluido">Incluido en PLAN VIP de $1499 al mes</div>
+          <div class="info">
+            <div class="modelo">${item.TELEFONO}</div>
+            <div class="caracteristicas">${item.CARACTERISTICAS}</div>
+          </div>
+          <div class="beneficio">
+            <img src="https://raw.githubusercontent.com/piztian/TelcelVIP/main/fotos/beneficios/beneficiosplanvip.png" alt="Beneficios Plan VIP">
+          </div>
+        </div>
+      `;
+
+      container.insertAdjacentHTML("beforeend", html);
+
+      // 🎠 Si hay más de una imagen, activar carrusel
+      if (imagenes.length > 1) {
+        let i = 0;
+        setInterval(() => {
+          i = (i + 1) % imagenes.length;
+          const img = document.getElementById(idImagen);
+          if (img) {
+            img.style.opacity = 0;
+            setTimeout(() => {
+              img.src = imagenes[i];
+              img.style.opacity = 1;
+            }, 200);
+          }
+        }, 3000);
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
