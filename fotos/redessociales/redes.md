@@ -1,0 +1,1 @@
+para poner redes pics
