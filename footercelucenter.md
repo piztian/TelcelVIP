@@ -1,0 +1,125 @@
+Aquí tienes el **`.md`** listo para que lo subas a tu repo con el footer actualizado y enlaces correctos.
+
+---
+
+````md
+# Footer Celucenter (Simplificado con redes correctas)
+
+Este es el código HTML del footer oficial de Celucenter, optimizado para Bitrix24 y páginas HTML sin librerías externas.  
+Incluye logo, slogan, redes sociales oficiales y bloque legal.
+
+## Código HTML
+
+```html
+<!-- ====== FOOTER CELUCENTER (simplificado con redes correctas) ====== -->
+<footer style="background:#0f1115;color:#eaeaea;margin-top:40px;font-family:Segoe UI,system-ui,Arial,sans-serif;text-align:center">
+  
+  <!-- Contenedor central -->
+  <div style="max-width:1100px;margin:0 auto;padding:28px 16px">
+    
+    <!-- ===== LOGO Y TEXTO PRINCIPAL ===== -->
+    <div style="margin-bottom:20px">
+      <!-- Logo principal -->
+      <img src="https://www.celucenter.com/images/Celucenter-500x260.png" 
+           alt="Celucenter" 
+           style="max-width:180px;height:auto;display:block;margin:0 auto 8px auto">
+      <!-- Texto distribuidor -->
+      <div style="font-size:14px;color:#aaa;">Distribuidor autorizado</div>
+    </div>
+
+    <!-- ===== SLOGAN ===== -->
+    <div style="color:#00e676;font-weight:800;font-style:italic;margin-top:6px;font-size:18px">
+      “Celucenter, ¿Dónde Más?”
+    </div>
+
+    <!-- ===== REDES SOCIALES ===== -->
+    <div style="margin-top:25px">
+      <div style="font-weight:800;margin-bottom:8px">Síguenos</div>
+      <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap">
+        
+        <!-- Facebook -->
+        <a href="https://web.facebook.com/celucentermxoficial" target="_blank" rel="noopener" 
+           style="display:inline-flex;align-items:center;gap:8px;
+                  border:1px solid #1f2431;border-radius:10px;
+                  padding:8px 10px;background:#121622;color:#eaeaea;text-decoration:none">
+          <img alt="Facebook" src="https://raw.githubusercontent.com/piztian/TelcelVIP/main/fotos/redessociales/facebook.webp" style="height:18px">
+          <span>Facebook</span>
+        </a>
+
+        <!-- Instagram -->
+        <a href="https://www.instagram.com/celucentermxoficial/" target="_blank" rel="noopener" 
+           style="display:inline-flex;align-items:center;gap:8px;
+                  border:1px solid #1f2431;border-radius:10px;
+                  padding:8px 10px;background:#121622;color:#eaeaea;text-decoration:none">
+          <img alt="Instagram" src="https://raw.githubusercontent.com/piztian/TelcelVIP/main/fotos/redessociales/instagram.webp" style="height:18px">
+          <span>Instagram</span>
+        </a>
+
+        <!-- TikTok -->
+        <a href="https://www.tiktok.com/@celucentermx" target="_blank" rel="noopener" 
+           style="display:inline-flex;align-items:center;gap:8px;
+                  border:1px solid #1f2431;border-radius:10px;
+                  padding:8px 10px;background:#121622;color:#eaeaea;text-decoration:none">
+          <img alt="TikTok" src="https://raw.githubusercontent.com/piztian/TelcelVIP/main/fotos/redessociales/tiktok.webp" style="height:18px">
+          <span>TikTok</span>
+        </a>
+
+        <!-- X (Twitter) -->
+        <a href="https://x.com/CeluFiamos" target="_blank" rel="noopener" 
+           style="display:inline-flex;align-items:center;gap:8px;
+                  border:1px solid #1f2431;border-radius:10px;
+                  padding:8px 10px;background:#121622;color:#eaeaea;text-decoration:none">
+          <img alt="X" src="https://raw.githubusercontent.com/piztian/TelcelVIP/main/fotos/redessociales/x.webp" style="height:18px">
+          <span>X</span>
+        </a>
+
+        <!-- WhatsApp -->
+        <a href="https://wa.me/5213321012446" target="_blank" rel="noopener" 
+           style="display:inline-flex;align-items:center;gap:8px;
+                  border:1px solid #1f2431;border-radius:10px;
+                  padding:8px 10px;background:#121622;color:#eaeaea;text-decoration:none">
+          <img alt="WhatsApp" src="https://raw.githubusercontent.com/piztian/TelcelVIP/main/fotos/redessociales/whatsapp.webp" style="height:18px">
+          <span>WhatsApp</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Separador -->
+    <div style="height:1px;background:linear-gradient(90deg,transparent,#262b36,transparent);margin:22px 0"></div>
+
+    <!-- ===== BLOQUE LEGAL ===== -->
+    <div style="display:flex;flex-direction:column;gap:10px;align-items:center">
+      <div style="color:#a6a6a6">
+        &copy; <span id="cc-year"></span> Celucenter. Todos los derechos reservados.
+      </div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center">
+        <a href="/aviso-de-privacidad" style="color:#a6a6a6;text-decoration:none">Aviso de Privacidad</a>
+        <a href="/terminos-y-condiciones" style="color:#a6a6a6;text-decoration:none">Términos y Condiciones</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<!-- Script para año dinámico -->
+<script>
+  document.getElementById('cc-year').textContent = new Date().getFullYear();
+</script>
+<!-- ====== /FOOTER CELUCENTER ====== -->
+````
+
+---
+
+## Notas
+
+* Asegúrate de que todos los íconos (`.webp`) estén en la carpeta `/fotos/redessociales/` de tu repositorio GitHub.
+* El ícono `tiktok.webp` debe agregarse si aún no existe para que se muestre correctamente.
+* Compatible con Bitrix24 como bloque HTML independiente, sin afectar otros estilos de la página.
+
+```
+
+---
+
+¿Quieres que en este mismo `.md` te ponga también **la versión con íconos optimizados al mismo tamaño** para que la tengas lista y no se vean disparejos en móvil?
+```
