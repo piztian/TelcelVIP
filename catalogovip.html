@@ -5,68 +5,34 @@
   <title>Catálogo Telcel VIP</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* 🎨 Estilos generales */
-    body {
-      margin: 0;
+    body{margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f4f4;
-    }
-
-    h1 {
-      text-align: center;
-      margin: 20px;
-    }
-
-    /* 📦 Grid de tarjetas */
-    .grid {
-      display: grid;
+      background-color: #f4f4f4;}h1{text-align: center;
+      margin: 20px;}.grid{display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 20px;
       padding: 20px;
       max-width: 1200px;
-      margin: auto;
-    }
-
-    /* 🃏 Estilo de tarjeta */
-    .card {
-      position: relative;
+      margin: auto;}.card{position: relative;
       overflow: hidden;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      background: white;
-    }
-
-    /* 🖼️ Imagen del equipo */
-    .card img {
+      background: white;}.carousel{position: relative;
       width: 100%;
-      height: auto;
-      max-height: 250px;
+      height: 250px;}.carousel img{position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
       object-fit: contain;
       padding: 8px;
-      transition: opacity 0.5s ease-in-out;
-    }
-
-    /* 🔎 Área de texto debajo de imagen */
-    .info {
-      padding: 15px;
-      text-align: center;
-    }
-
-    .modelo {
-      font-size: 18px;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;}.carousel img.active{opacity: 1;
+      z-index: 2;}.info{padding: 15px;
+      text-align: center;}.modelo{font-size: 18px;
       font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .caracteristicas {
-      font-size: 14px;
+      margin-bottom: 5px;}.caracteristicas{font-size: 14px;
       color: #444;
-      margin-bottom: 10px;
-    }
-
-    /* 💰 Precio tachado */
-    .precio {
-      background: #e60023;
+      margin-bottom: 10px;}.precio{background: #e60023;
       color: white;
       font-weight: bold;
       padding: 4px 10px;
@@ -75,68 +41,41 @@
       position: absolute;
       top: 10px;
       left: 10px;
-      text-decoration: line-through;
-    }
-
-    /* 🔴 Leyenda PLAN VIP */
-    .incluido {
-      font-size: 14px;
+      text-decoration: line-through;}.incluido{font-size: 14px;
       color: #d40000;
       font-weight: bold;
-      margin-top: 32px;
-    }
-
-    /* 🧾 Imagen de beneficios al pie */
-    .beneficio {
-      width: 100%;
-      padding: 0 15px 15px;
-    }
-
-    .beneficio img {
-      width: 100%;
-      border-radius: 0 0 10px 10px;
-    }
-  </style>
+      margin-top: 32px;}.beneficio{width: 100%;
+      padding: 0 15px 15px;}.beneficio img{width: 100%;
+      border-radius: 0 0 10px 10px;}</style>
 </head>
 <body>
 
-  <!-- 🧷 Encabezado -->
   <h1>🌟 Catálogo Telcel VIP</h1>
 
-  <!-- 🔁 Contenedor del catálogo -->
   <div class="grid" id="catalogo"></div>
 
   <script>
-    // 🔗 Conecta con el Google Sheet publicado
     fetch("https://opensheet.elk.sh/1H91IAn1suzgIZaZ7VXzpGpM-CWvPf9dKv_hUNoELjFg/Datos%20Equipos")
       .then(response => response.json())
+      .then(data =>{const container = document.getElementById("catalogo");
 
-      // 🎯 Procesa cada equipo
-      .then(data => {
-        const container = document.getElementById("catalogo");
-
-        data.forEach((item, index) => {
-          // 🧩 Divide archivo en caso de múltiples imágenes
-          const archivos = item.archivo ? item.archivo.split(',').map(nombre => nombre.trim()) : [];
+        data.forEach((item, index) =>{const archivos = item.archivo ? item.archivo.split(',').map(nombre => nombre.trim()) :[];
           if (archivos.length === 0) return;
 
-          // 🖼️ Construye URLs de las imágenes
           const imagenes = archivos.map(nombre =>
             `https://raw.githubusercontent.com/piztian/TelcelVIP/main/fotos/${nombre}`
           );
 
-          const idImagen = `imagen-${index}`;
-          const rutaInicial = imagenes[0]; // Primera imagen
-
-          // 🧠 Codifica el modelo para incluirlo como parámetro en la URL
           const modeloEncoded = encodeURIComponent(item.TELEFONO);
+          const carouselId = `carousel-${index}`;
 
-          // 🧱 Construcción del HTML por tarjeta
           const html = `
             <div class="card">
-              <!-- 👆 Al hacer clic, redirige a la página de detalle -->
               <a href="https://celucentershop.bitrix24.site/detalleVIP/?modelo=${modeloEncoded}">
-                <img id="${idImagen}" src="${rutaInicial}" alt="${item.TELEFONO}">
+                <div class="carousel" id="${carouselId}">
+                  ${imagenes.map((img, i) =>
+                    `<img src="${img}" class="${i === 0 ? 'active' : ''}" alt="${item.TELEFONO}">`
+                  ).join('')}</div>
               </a>
               <div class="precio">$${item.PRECIO}</div>
               <div class="incluido">Incluido en PLAN VIP de $1499 al mes</div>
@@ -150,26 +89,19 @@
             </div>
           `;
 
-          // 🧩 Inserta tarjeta al catálogo
-          container.insertAdjacentHTML("beforeend", html);
+          container.insertAdjacentHTML("beforeend", html);});
 
-          // 🎠 Si hay más de una imagen, activa carrusel
-          if (imagenes.length > 1) {
-            let i = 0;
-            setInterval(() => {
-              i = (i + 1) % imagenes.length;
-              const img = document.getElementById(idImagen);
-              if (img) {
-                img.style.opacity = 0;
-                setTimeout(() => {
-                  img.src = imagenes[i];
-                  img.style.opacity = 1;
-                }, 200);
-              }
-            }, 3000);
-          }
-        });
-      });
+        // 🎠 Activar carruseles una vez que todo esté en DOM
+        window.requestAnimationFrame(() =>{const carousels = document.querySelectorAll('.carousel');
+
+          carousels.forEach(carrusel =>{const imgs = carrusel.querySelectorAll('img');
+            if (imgs.length <= 1) return;
+
+            let current = 0;
+
+            setInterval(() =>{imgs[current].classList.remove('active');
+              current = (current + 1) % imgs.length;
+              imgs[current].classList.add('active');}, 3000);});});});
   </script>
 
 </body>
