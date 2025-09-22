@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Detalle Telcel VIP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #d3d3d3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      padding: 20px;
+      max-width: 600px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .titulo {
+      font-size: 26px;
+      font-weight: bold;
+      color: #e60023;
+      margin-bottom: 20px;
+    }
+
+    /* 🎠 Imagen principal carrusel */
+    .main-image {
+      width: 100%;
+      max-height: 280px;
+      object-fit: contain;
+      border-radius: 10px;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    /* 🖼️ Miniaturas */
+    .thumbnails {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .thumbnails img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      border: 2px solid transparent;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .thumbnails img.active-thumb {
+      border-color: #e60023;
+    }
+
+    .precio {
+      text-decoration: line-through;
+      color: #e60023;
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 15px;
+    }
+
+    .incluido {
+      font-size: 16px;
+      font-weight: bold;
+      color: #d40000;
+      margin-bottom: 10px;
+    }
+
+    .caracteristicas, .detalles {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .beneficio {
+      margin-top: 20px;
+    }
+
+    .beneficio img {
+      width: 100%;
+      border-radius: 0 0 10px 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="detalle">
+    <div class="titulo">🌟 Equipazo VIP en tu plan favorito 🌟</div>
+    <!-- Contenido se cargará aquí -->
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const modelo = params.get("modelo");
+
+    fetch("https://opensheet.elk.sh/1H91IAn1suzgIZaZ7VXzpGpM-CWvPf9dKv_hUNoELjFg/Datos%20Equipos")
+      .then(res => res.json())
+      .then(data => {
+        const item = data.find(p => p.TELEFONO === modelo);
+        if (!item) {
+          document.getElementById("detalle").innerHTML += "<p>No se encontró información del equipo.</p>";
+          return;
+        }
+
+        const archivos = item.archivo ? item.archivo.split(',').map(n => n.trim()) : [];
+        const imagenes = archivos.map(n => `https://raw.githubusercontent.com/piztian/TelcelVIP/main/fotos/${n}`);
+
+        const imagenPrincipalId = "mainImage";
+        const miniaturasId = "miniaturas";
+
+        const html = `
+          <h2 class="modelo">${item.TELEFONO}</h2>
+          <img id="${imagenPrincipalId}" class="main-image" src="${imagenes[0]}" alt="${item.TELEFONO}">
+
+
+          <div class="thumbnails" id="${miniaturasId}">
+            ${imagenes.map((url, i) =>
+              `<img src="${url}" data-index="${i}" class="${i === 0 ? 'active-thumb' : ''}">`
+            ).join('')}
+          </div>
+
+          <div class="precio">$${item.PRECIO}</div>
+          <div class="incluido">Incluido en PLAN VIP de $1499 al mes</div>
+          <div class="caracteristicas">${item.CARACTERISTICAS}</div>
+          <div class="detalles">${item.DETALLES_ADICIONALES || ''}</div>
+          <div class="beneficio">
+            <img src="https://raw.githubusercontent.com/piztian/TelcelVIP/main/fotos/beneficios/beneficiosplanvip.png" alt="Beneficios">
+          </div>
+        `;
+
+        const contenedor = document.getElementById("detalle");
+        contenedor.innerHTML += html;
+
+        const mainImg = document.getElementById(imagenPrincipalId);
+        const thumbs = document.querySelectorAll(`#${miniaturasId} img`);
+
+        let currentIndex = 0;
+
+        // ⏱️ Carrusel automático
+        setInterval(() => {
+          currentIndex = (currentIndex + 1) % imagenes.length;
+          mainImg.src = imagenes[currentIndex];
+          updateThumbs(currentIndex);
+        }, 5000);
+
+        // 🖱️ Miniatura clickeada
+        thumbs.forEach(thumb => {
+          thumb.addEventListener('click', () => {
+            const index = parseInt(thumb.getAttribute('data-index'));
+            currentIndex = index;
+            mainImg.src = imagenes[currentIndex];
+            updateThumbs(currentIndex);
+          });
+        });
+
+        function updateThumbs(index) {
+          thumbs.forEach(t => t.classList.remove('active-thumb'));
+          thumbs[index].classList.add('active-thumb');
+        }
+      });
+  </script>
+</body>
+</html>
